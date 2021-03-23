@@ -1,6 +1,6 @@
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<!-- TOTAL-DOWNLOADS-BADGE:START - Do not remove or modify this section -->
+[![NPM Downloads](https://img.shields.io/npm/dt/@cosmostation/cosmosjs.svg)](https://www.npmjs.com/package/@cosmostation/cosmosjs)
+<!-- TOTAL-DOWNLOADS-BADGE:END -->
 
 <p align="center">
   <a href="https://www.cosmostation.io" target="_blank" rel="noopener noreferrer"><img width="100" src="https://user-images.githubusercontent.com/20435620/55696624-d7df2e00-59f8-11e9-9126-edf9a40b11a8.png" alt="Cosmostation logo"></a>
@@ -15,29 +15,30 @@ A JavasSript Open Source Library for [Cosmos Network](https://cosmos.network/), 
 
 This library supports cosmos address generation and verification. It enables you to create an offline signature functions of different types of transaction messages. It will eventually support all the other blockchains that are based on Tendermint in the future.
 
-[![MIT](https://img.shields.io/apm/l/vim-mode.svg)](https://github.com/cosmostation/cosmosjs/blob/master/LICENSE)
-[![NPM](https://badge.fury.io/js/%40cosmostation%2Fcosmosjs.svg)](https://www.npmjs.com/package/@cosmostation/cosmosjs)
-[![](https://data.jsdelivr.com/v1/package/npm/@cosmostation/cosmosjs/badge?style=rounded)](https://www.jsdelivr.com/package/npm/@cosmostation/cosmosjs?path=dist)
+> :warning: **If you are using under @cosmostation/cosmosjs@0.9.x**: Be very careful! @cosmostation/cosmosjs@0.10.0+ will supports protobuf signing for cosmos-sdk 0.40.0+. You can download it from `protobuf-test` branch.
+
+[![License](https://img.shields.io/npm/l/@cosmostation/cosmosjs.svg)](https://www.npmjs.com/package/@cosmostation/cosmosjs)
+[![Latest Stable Version](https://img.shields.io/npm/v/@cosmostation/cosmosjs.svg)](https://www.npmjs.com/package/@cosmostation/cosmosjs)
+[![NPM Downloads](https://img.shields.io/npm/dm/@cosmostation/cosmosjs.svg)](https://www.npmjs.com/package/@cosmostation/cosmosjs)
 
 ## Installation
 
 In order to fully use this library, you need to run a local or remote full node and set up its rest server, which acts as an intermediary between the front-end and the full-node
 
-### NPM
+### NPM (Amino)
 
 ```bash
 npm install @cosmostation/cosmosjs
 ```
 
-### Yarn
+### Yarn (Amino)
 
 ```bash
 yarn add @cosmostation/cosmosjs
 ```
 
-### Browser Distribution
-
-CosmosJS supports browserify.
+### Warning
+- If you use a version under 0.9.x, it will be deprecated. You can download protobuf version from the branch of `protobuf-test`.
 
 ## Import 
 
@@ -66,7 +67,7 @@ import cosmosjs from "@cosmostation/cosmosjs";
 ```js
 const cosmosjs = require("@cosmostation/cosmosjs");
 
-const chainId = "cosmoshub-3";
+const chainId = "cosmoshub-4";
 const cosmos = cosmosjs.network(lcdUrl, chainId);
 
 const mnemonic = "..."
@@ -78,7 +79,7 @@ const ecpairPriv = cosmos.getECPairPriv(mnemonic);
 ```js
 const cosmosjs = require("@cosmostation/cosmosjs");
 
-const chainId = "irishub";
+const chainId = "irishub-1";
 const iris = cosmosjs.network(lcdUrl, chainId);
 iris.setBech32MainPrefix("iaa");
 ```
@@ -86,7 +87,7 @@ iris.setBech32MainPrefix("iaa");
 ```js
 const cosmosjs = require("@cosmostation/cosmosjs");
 
-const chainId = "kava-4";
+const chainId = "kava-6";
 const kava = cosmosjs.network(lcdUrl, chainId);
 kava.setBech32MainPrefix("kava");
 ```
@@ -118,7 +119,7 @@ scrt.setBech32MainPrefix("secret");
 ```js
 const cosmosjs = require("@cosmostation/cosmosjs");
 
-const chainId = "akashnet-1";
+const chainId = "akashnet-2";
 const akash = cosmosjs.network(lcdUrl, chainId);
 akash.setBech32MainPrefix("akash");
 ```
@@ -160,24 +161,22 @@ cosmos.getAccounts(address).then(data => {
 		chain_id: chainId,
 		fee: { amount: [ { amount: String(5000), denom: "uatom" } ], gas: String(200000) },
 		memo: "",
-		account_number: String(data.result.value.account_number),
-		sequence: String(data.result.value.sequence)
+		account_number: String(data.account.account_number),
+		sequence: String(data.account.sequence)
 	});
 
 	...
 })
 ```
 
-Sign transaction by using stdSignMsg and broadcast by using [/txs](https://lcd-cosmos-free.cosmostation.io/txs) REST API
+Sign transaction by using stdSignMsg and broadcast by using `/tx` REST API
 ```js
 const signedTx = cosmos.sign(stdSignMsg, ecpairPriv);
 cosmos.broadcast(signedTx).then(response => console.log(response));
 ```
 
-Cosmostation offers LCD url([https://lcd-cosmos-free.cosmostation.io](https://lcd-cosmos-free.cosmostation.io/node_info)).
-- This rest server URL may be disabled at any time. In order to maintain stable blockchain service, it is recommended to prepare your rest server.
+Cosmostation offers LCD url is deprecated. In order to maintain stable blockchain service, it is recommended to prepare your rest server.
 - Setting up the rest server: (https://hub.cosmos.network/master/resources/service-providers.html#setting-up-the-rest-server)
-- API Rate Limiting: 2 requests per second
 
 ## Supporting Message Types (Updating...)
 - If you need more message types, you can see [/docs/msg_types](https://github.com/cosmostation/cosmosjs/tree/master/docs/msg_types)
